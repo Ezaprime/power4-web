@@ -1,0 +1,41 @@
+{{define "result"}}
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <title>Power4 - Résultat</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="/static/style.css">
+  <style>
+    .btn{background:#fff;color:#1a1a1a;border:none;border-radius:10px;padding:8px 12px;text-decoration:none;margin-right:8px}
+    .board{border-collapse:separate;border-spacing:8px;margin:16px auto 0}
+    .cell{width:48px;height:48px;border-radius:50%;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25)}
+    .p1{background:radial-gradient(circle at 35% 35%, #ffe8a6, #ffb800 45%, #b07a00 75%)}
+    .p2{background:radial-gradient(circle at 35% 35%, #b6fff0, #39e1bf 45%)}
+  </style>
+</head>
+<body>
+  <div class="page">
+    {{if eq .Winner 1}}<h1>Victoire de {{.Player1}} !</h1>{{end}}
+    {{if eq .Winner 2}}<h1>Victoire de {{.Player2}} !</h1>{{end}}
+    {{if eq .Winner 3}}<h1>Match nul !</h1>{{end}}
+
+    <div style="margin-top:10px">
+      <a class="btn" href="/reset">Accueil</a>
+    </div>
+
+    <table class="board">
+      {{range $r, $row := .Grid}}
+        <tr>
+          {{range $row}}
+            {{if eq . 1}}<td class="cell p1"></td>
+            {{else if eq . 2}}<td class="cell p2"></td>
+            {{else}}<td class="cell"></td>{{end}}
+          {{end}}
+        </tr>
+      {{end}}
+    </table>
+  </div>
+</body>
+</html>
+{{end}}

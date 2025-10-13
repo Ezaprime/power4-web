@@ -1,0 +1,44 @@
+{{define "home"}}
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <title>Power4 - Start</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <div class="page">
+    <h1>POWER 4</h1>
+    <h2>Entrez vos noms et choisissez une difficulté</h2>
+
+    <form action="/start" method="POST" class="form">
+      <label>Joueur 1
+        <input type="text" name="p1" placeholder="Nom joueur 1" required>
+      </label>
+      <label>Joueur 2
+        <input type="text" name="p2" placeholder="Nom joueur 2" required>
+      </label>
+
+      <div class="levels">
+  <div class="level-option">
+    <input type="radio" id="easy" name="level" value="easy">
+    <label for="easy">Facile</label>
+  </div>
+  <div class="level-option">
+    <input type="radio" id="medium" name="level" value="medium">
+    <label for="medium">Moyen</label>
+  </div>
+  <div class="level-option">
+    <input type="radio" id="hard" name="level" value="hard">
+    <label for="hard">Difficile</label>
+  </div>
+</div>
+
+
+      <button type="submit">Start</button>
+    </form>
+  </div>
+</body>
+</html>
+{{end}}

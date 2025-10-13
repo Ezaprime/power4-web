@@ -1,0 +1,50 @@
+{{define "play"}}
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <title>Power4 - Game</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="/static/style.css">
+  <style>
+    .columns{display:flex;gap:8px;justify-content:center;margin:12px 0 16px}
+    .columns button{padding:8px 10px;border-radius:8px;border:1px solid rgba(255,255,255,.3);background:rgba(255,255,255,.1);color:#fff;cursor:pointer}
+    .board{border-collapse:separate;border-spacing:8px;margin:0 auto}
+    .cell{width:48px;height:48px;border-radius:50%;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25)}
+    .p1{background:radial-gradient(circle at 35% 35%, #ffe8a6, #ffb800 45%, #b07a00 75%)}
+    .p2{background:radial-gradient(circle at 35% 35%, #b6fff0, #39e1bf 45%, #1f9e88 75%)}
+    .top{display:flex;gap:12px;justify-content:center;margin-bottom:10px}
+    .btn{background:#fff;color:#1a1a1a;border:none;border-radius:10px;padding:8px 12px;text-decoration:none}
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="top">
+      <a class="btn" href="/reset">Rematch</a>
+      <span>Tour : Joueur {{.Current}}</span>
+      <span>Difficulté : {{.Difficulty}}</span>
+    </div>
+
+    <h1>{{.Player1}} (1) vs {{.Player2}} (2)</h1>
+
+    <form action="/play" method="POST" class="columns">
+      {{range .ColumnIndexes}}
+        <button name="col" value="{{.}}">Col {{.}}</button>
+      {{end}}
+    </form>
+
+    <table class="board">
+      {{range $r, $row := .Grid}}
+        <tr>
+          {{range $row}}
+            {{if eq . 1}}<td class="cell p1"></td>
+            {{else if eq . 2}}<td class="cell p2"></td>
+            {{else}}<td class="cell"></td>{{end}}
+          {{end}}
+        </tr>
+      {{end}}
+    </table>
+  </div>
+</body>
+</html>
+{{end}}
