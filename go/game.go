@@ -8,12 +8,12 @@ import (
 
 type Game struct {
 	Rows, Cols    int
-	Grid          [][]int // 0 vide, 1 P1, 2 P2
+	Grid          [][]int 
 	Player1       string
 	Player2       string
 	Current       int
 	Moves         int
-	Winner        int // 0=none, 1|2=gagnant, 3=nul
+	Winner        int 
 	Difficulty    string
 	Started       bool
 	ColumnIndexes []int

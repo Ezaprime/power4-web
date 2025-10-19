@@ -1,187 +1,403 @@
-/* ====== Base & Thème ====== */
+/* =======================================================
+   POWER4 — LED / Néon Arcade (safe clicks, no overlays)
+   by Chef's UI Lab ✨
+======================================================= */
+
+/* Base & variables */
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%}
 :root{
-  --bg:#0b1220;        --bg2:#0e1830;
-  --text:#f5f8ff;      --muted:#c9d3ea;
-  --line:rgba(255,255,255,.12);
-  --glass:rgba(255,255,255,.06);
-  --accent:#61e7c8;    --accent2:#5aa8ff;
-  --win:#ffd166;       --lose:#ef476f;
-  --r:18px;            --shadow:0 18px 45px rgba(0,0,0,.45);
-  --glow:0 0 18px rgba(97,231,200,.35);
+  --bg:#070b14; --bg2:#0b1222;
+  --text:#f7fbff; --muted:#b7c6e3;
+  --line:rgba(255,255,255,.14);
+  --card:rgba(255,255,255,.06);
+  --accent:#00ffd5; --accent2:#3b7cff;
+  --led-red:#ff3264; --led-cyan:#00eaff; --led-amber:#ffcc33; --led-green:#23ff95;
+  --r:18px; --shadow:0 22px 60px rgba(0,0,0,.55);
 }
+
+/* Fond */
 body{
   font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
   color:var(--text);
   background:
-    radial-gradient(1200px 800px at 15% 10%, #122248 0%, #0d1834 55%, #0a1124 100%),
+    radial-gradient(1200px 800px at 20% 10%, #172a55 0%, transparent 55%),
+    radial-gradient(900px 700px at 85% 80%, #0f2a4a 0%, transparent 60%),
     linear-gradient(180deg,var(--bg),var(--bg2));
-  display:flex; align-items:center; justify-content:center;
+  display:flex;align-items:center;justify-content:center;
   padding:36px;
 }
 
-/* ====== Carte / Conteneur ====== */
+/* Carte principale */
 .page{
-  width:min(980px,94vw);
-  padding:36px 28px;
-  background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.04));
+  width:min(1020px,94vw);
+  padding:38px 30px;
+  background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.035));
   border:1px solid var(--line);
   border-radius:var(--r);
-  backdrop-filter: blur(14px);
   box-shadow:var(--shadow);
-  display:flex; flex-direction:column; align-items:center; gap:14px;
-  position:relative; isolation:isolate;
-}
-.page::before{
-  content:"";
-  position:absolute; inset:-2px; z-index:-1;
-  border-radius:calc(var(--r) + 2px);
-  background:conic-gradient(from 0deg, var(--accent), var(--accent2), #a08cff, var(--accent));
-  filter:blur(16px); opacity:.18;
+  backdrop-filter:blur(12px);
+  display:flex;flex-direction:column;align-items:center;gap:16px;
 }
 
-/* ====== Titres ====== */
-h1{font-size:clamp(28px,4vw,40px);line-height:1.1;letter-spacing:.2px;text-align:center}
-h2{font-size:clamp(18px,2.2vw,22px);color:var(--muted);font-weight:600;margin-top:2px;text-align:center}
+/* Titres */
+h1{
+  font-size:clamp(30px,4.6vw,46px);
+  text-align:center; letter-spacing:.3px;
+  text-shadow:0 0 12px rgba(0,255,213,.28), 0 0 24px rgba(59,124,255,.22);
+}
+h2{
+  font-size:clamp(18px,2.3vw,22px);
+  color:var(--muted); font-weight:600; text-align:center;
+}
 
-/* ====== Boutons génériques ====== */
-.btn, button{
+/* Boutons génériques (shimmer + glow) */
+button,.btn{
   --g1:var(--accent); --g2:var(--accent2);
-  background:linear-gradient(135deg,var(--g1),var(--g2));
-  color:#0b1022; border:0; border-radius:12px;
-  padding:12px 16px; font-weight:800; cursor:pointer;
-  box-shadow:0 10px 22px rgba(0,0,0,.28), var(--glow);
-  transition:transform .12s, filter .15s, box-shadow .15s;
-  text-decoration:none; display:inline-flex; align-items:center; gap:8px;
+  appearance:none;border:0;border-radius:12px;
+  padding:12px 18px;font-weight:900;cursor:pointer;
+  color:#081220;background:linear-gradient(135deg,var(--g1),var(--g2));
+  box-shadow:0 14px 26px rgba(0,0,0,.35), 0 0 16px rgba(0,255,213,.25);
+  transition:transform .12s, filter .15s, box-shadow .15s, background-position .8s;
+  background-size:200% 200%;
+  position:relative; z-index:1;
 }
-.btn:hover, button:hover{transform:translateY(-1px); filter:brightness(1.05)}
-.btn:active, button:active{transform:scale(.98)}
-.btn.ghost{
-  background:transparent; color:var(--text);
-  border:1px solid var(--line); box-shadow:none;
+button:hover,.btn:hover{
+  transform:translateY(-2px); filter:brightness(1.06);
+  background-position:100% 0%;
+  box-shadow:0 18px 34px rgba(0,0,0,.4), 0 0 22px rgba(0,255,213,.35);
+}
+button:active,.btn:active{ transform:scale(.985) }
+.btn.ghost{ background:transparent;color:var(--text);border:1px solid var(--line);box-shadow:none }
+
+/* Focus accessible */
+:where(a,button,.btn,input):focus{
+  outline:3px solid rgba(0,255,213,.35); outline-offset:2px;
 }
 
-/* ====== Formulaire (home) ====== */
-.form{display:grid; gap:14px; width:min(460px,92%); margin-top:10px}
-.form label{display:grid; gap:8px; font-weight:600}
-input[type="text"], input[type="number"]{
-  width:100%; padding:12px 14px; border-radius:12px;
-  border:1px solid var(--line); background:rgba(255,255,255,.08); color:var(--text);
-  transition:border-color .15s, box-shadow .15s, transform .08s, background .2s;
+/* Formulaire */
+.form{display:grid;gap:14px;width:min(500px,94%);margin-top:8px}
+.form label{display:grid;gap:8px;font-weight:700}
+input[type="text"],input[type="number"]{
+  width:100%;padding:12px 14px;border-radius:12px;border:1px solid var(--line);
+  background:rgba(255,255,255,.08);color:var(--text);
+  transition:border-color .15s, box-shadow .15s, background .2s, transform .08s;
 }
 input::placeholder{color:rgba(230,240,255,.6)}
-input:hover{border-color:rgba(255,255,255,.25)}
+input:hover{border-color:rgba(255,255,255,.24)}
 input:focus{
-  outline:none; border-color:var(--accent);
-  box-shadow:0 0 0 3px rgba(97,231,200,.25), 0 0 16px rgba(97,231,200,.25);
-  transform:translateY(-1px); background:rgba(255,255,255,.1);
+  outline:none;border-color:var(--accent);
+  box-shadow:0 0 0 3px rgba(0,255,213,.22), 0 0 16px rgba(0,255,213,.22);
+  background:rgba(255,255,255,.1); transform:translateY(-1px);
 }
 
-/* ====== Top bar (play) ====== */
-.top{display:flex; flex-wrap:wrap; gap:10px; justify-content:center; align-items:center; width:100%}
+/* Niveaux (radio chips) */
+.levels{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:12px}
+.level-option{
+  display:flex;align-items:center;gap:10px;cursor:pointer;user-select:none;
+  padding:10px 14px;border-radius:999px;border:1px solid var(--line);
+  background:rgba(255,255,255,.06); color:#e7f5ff; font-weight:800;
+  transition:background .2s, transform .15s, box-shadow .15s;
+}
+.level-option:hover{background:rgba(0,255,213,.12);transform:translateY(-1px);box-shadow:0 0 16px rgba(0,255,213,.22)}
+.level-option input[type="radio"]{width:18px;height:18px;accent-color:var(--accent);cursor:pointer}
+.level-option span{letter-spacing:.3px}
+
+/* Top bar */
+.top{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;align-items:center;width:100%}
 .tag{
-  padding:6px 10px; border:1px solid var(--line); border-radius:999px;
-  background:rgba(255,255,255,.06); color:var(--muted); font-size:14px;
+  padding:6px 10px;border:1px solid var(--line);border-radius:999px;
+  background:rgba(255,255,255,.06);color:var(--muted);font-size:14px
 }
 
-/* ====== Boutons colonnes ====== */
-.columns{display:flex; flex-wrap:wrap; gap:8px; justify-content:center; margin:12px 0 16px}
-.columns button{
-  background:linear-gradient(180deg, rgba(97,231,200,.2), rgba(90,168,255,.26));
-  color:#dffaf4; border:1px solid rgba(97,231,200,.45); border-radius:10px; padding:8px 12px;
-  transition:transform .08s ease, background .15s ease, box-shadow .15s;
+/* =======================================================
+   LED FRAME autour du plateau
+======================================================= */
+.board{
+  position:relative;
+  border-collapse:separate; border-spacing:12px;
+  margin:12px auto 0; user-select:none;
+  box-shadow:0 0 0 1px rgba(255,255,255,.12), 0 16px 40px rgba(0,0,0,.35);
 }
-.columns button:hover{background:rgba(97,231,200,.32); transform:translateY(-1px); box-shadow:var(--glow)}
-.columns button:active{transform:scale(.98)}
+.board::before,
+.board::after{
+  content:""; position:absolute; left:-22px; right:-22px; height:6px; top:-18px;
+  background:
+    repeating-linear-gradient(90deg,
+      var(--led-cyan) 0 14px,
+      transparent 14px 22px,
+      var(--led-amber) 22px 36px,
+      transparent 36px 44px);
+  filter:drop-shadow(0 0 6px rgba(0,255,213,.45)) drop-shadow(0 0 12px rgba(255,204,51,.25));
+  border-radius:6px; pointer-events:none; opacity:.9;
+  animation:led-scan 6s linear infinite;
+}
+.board::after{
+  top:auto; bottom:-18px;
+  animation-direction:reverse; opacity:.85;
+}
+@keyframes led-scan { to { background-position:200px 0; } }
 
-/* ====== Plateau ====== */
-.board{border-collapse:separate; border-spacing:10px; margin:0 auto; user-select:none}
+/* bandes LED verticales (via wrapper) */
+.board-wrap{
+  position:relative;
+  display:inline-block;
+}
+.board-wrap::before,
+.board-wrap::after{
+  content:""; position:absolute; top:-6px; bottom:-6px; width:6px; pointer-events:none;
+  background:
+    repeating-linear-gradient(180deg,
+      var(--led-green) 0 14px,
+      transparent 14px 22px,
+      var(--led-red) 22px 36px,
+      transparent 36px 44px);
+  filter:drop-shadow(0 0 6px rgba(35,255,149,.45)) drop-shadow(0 0 12px rgba(255,50,100,.25));
+  border-radius:6px; opacity:.9; animation:led-drop 7s linear infinite;
+}
+.board-wrap::before{ left:-18px; }
+.board-wrap::after{ right:-18px; animation-direction:reverse; }
+@keyframes led-drop { to { background-position:0 220px; } }
+
+/* =======================================================
+   CELLULES & PIONS — effets lumineux
+======================================================= */
 .cell{
-  width:54px; height:54px; border-radius:50%;
-  background:linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.02));
+  width:56px; height:56px; border-radius:50%;
+  background:radial-gradient(140% 140% at 30% 25%, rgba(255,255,255,.22), rgba(255,255,255,.05) 48%, rgba(0,0,0,.25) 100%);
   border:1px solid rgba(255,255,255,.18);
   box-shadow:
-    inset 0 10px 18px rgba(0,0,0,.40),
-    inset 0 -4px 10px rgba(255,255,255,.06),
-    0 2px 14px rgba(0,0,0,.22);
+    inset 0 12px 18px rgba(0,0,0,.45),
+    inset 0 -6px 12px rgba(255,255,255,.08),
+    0 2px 12px rgba(0,0,0,.28);
   transition:transform .12s, box-shadow .18s, filter .18s;
+  position:relative;
 }
 .cell:hover{
-  transform:translateY(-2px) scale(1.03);
+  transform:translateY(-2px) scale(1.04);
   box-shadow:
-    inset 0 12px 20px rgba(0,0,0,.45),
-    0 6px 22px rgba(0,0,0,.32),
-    0 0 14px rgba(97,231,200,.28);
-  filter:drop-shadow(0 0 10px rgba(97,231,200,.25));
+    inset 0 14px 22px rgba(0,0,0,.5),
+    0 8px 20px rgba(0,0,0,.36),
+    0 0 14px rgba(0,255,213,.26);
+  filter:drop-shadow(0 0 10px rgba(0,255,213,.22));
 }
 
-/* Jetons */
+/* Pion Joueur 1 (gold LED) */
 .p1{
-  background:radial-gradient(circle at 35% 35%, #fff3bf, #ffca3a 45%, #b88700 78%);
-  box-shadow:0 0 10px rgba(255,209,102,.8), 0 0 24px rgba(255,178,36,.35);
+  background:
+    radial-gradient(60% 60% at 35% 30%, #fff5bf 0%, #ffd451 40%, #c99108 78%),
+    radial-gradient(140% 140% at 30% 25%, rgba(255,255,255,.22), transparent 50%);
+  box-shadow:
+    inset 0 10px 14px rgba(255,255,255,.50),
+    inset 0 -12px 18px rgba(0,0,0,.35),
+    0 0 12px rgba(255,204,51,.45),
+    0 0 24px rgba(255,204,51,.25);
+  border:1px solid rgba(255,204,51,.45);
+  animation:pulse-gold 2.6s ease-in-out infinite;
 }
+@keyframes pulse-gold{
+  0%,100%{filter:drop-shadow(0 0 8px rgba(255,204,51,.45))}
+  50%{filter:drop-shadow(0 0 16px rgba(255,204,51,.9))}
+}
+
+/* Pion Joueur 2 (cyan/teal LED) */
 .p2{
-  background:radial-gradient(circle at 35% 35%, #c3fff2, #33d6b4 45%, #167e6a 78%);
-  box-shadow:0 0 10px rgba(51,214,180,.8), 0 0 24px rgba(22,126,106,.35);
+  background:
+    radial-gradient(60% 60% at 35% 30%, #dcfff9 0%, #6ff0d6 40%, #1aa686 78%),
+    radial-gradient(140% 140% at 30% 25%, rgba(255,255,255,.22), transparent 50%);
+  box-shadow:
+    inset 0 10px 14px rgba(255,255,255,.48),
+    inset 0 -12px 18px rgba(0,0,0,.35),
+    0 0 12px rgba(0,255,213,.45),
+    0 0 24px rgba(0,255,213,.25);
+  border:1px solid rgba(0,255,213,.42);
+  animation:pulse-cyan 2.6s ease-in-out infinite;
+}
+@keyframes pulse-cyan{
+  0%,100%{filter:drop-shadow(0 0 8px rgba(0,255,213,.45))}
+  50%{filter:drop-shadow(0 0 16px rgba(0,255,213,.9))}
 }
 
-/* ====== Résultat ====== */
-.actions{display:flex; gap:10px; justify-content:center; margin-top:12px}
-.win h1{color:var(--win)}
-.lose h1{color:var(--lose)}
-
-/* ====== Focus visible (accessibilité) ====== */
-:where(a,button,.btn,input):focus{
-  outline:3px solid rgba(97,231,200,.35); outline-offset:2px;
+/* =======================================================
+   BOUTONS DE COLONNES
+======================================================= */
+.columns{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:12px 0 16px}
+.columns button{
+  position:relative; overflow:hidden;
+  color:#e9fbff; border:1px solid rgba(0,255,213,.35);
+  border-radius:10px; padding:8px 12px;
+  background:
+    linear-gradient(180deg, rgba(0,255,213,.18), rgba(59,124,255,.22));
+  box-shadow:0 6px 16px rgba(0,0,0,.32), 0 0 10px rgba(0,255,213,.22);
 }
+.columns button::after{
+  content:""; position:absolute; inset:0; pointer-events:none;
+  background:
+    linear-gradient(120deg, transparent 0 40%, rgba(255,255,255,.18) 50%, transparent 60%),
+    repeating-linear-gradient(90deg,
+      rgba(0,255,213,.22) 0 12px,
+      rgba(59,124,255,.18) 12px 24px);
+  mix-blend-mode:screen; opacity:.85;
+  transform:translateX(-100%);
+  transition:transform .45s ease;
+}
+.columns button:hover::after{ transform:translateX(0) }
 
-/* ====== Responsive ====== */
-@media (max-width:720px){
-  .page{padding:26px 18px}
-  .cell{width:46px; height:46px}
+/* Résultat */
+.actions{display:flex;gap:10px;justify-content:center;margin-top:12px}
+
+/* ==========================================
+   Garanties anti-bug de clic
+========================================== */
+body::before, body::after,
+.page::before, .page::after { display:none !important; }
+.board::before, .board::after,
+.board-wrap::before, .board-wrap::after { pointer-events:none; }
+.page *, .board, .cell, .columns button, .btn, button, input { position:relative; z-index:1; }
+
+/* Responsive */
+@media (max-width:760px){
+  .page{padding:28px 20px}
+  .cell{width:48px;height:48px}
 }
 @media (max-width:480px){
   body{padding:22px}
-  .cell{width:40px; height:40px}
+  .cell{width:40px;height:40px}
   .columns{gap:6px}
 }
-/* === Section niveaux (cases à cocher alignées) === */
-.levels {
+
+/* =====================================================
+   AJOUTS “NEON + ANIMATIONS”
+   (à partir d’ici : nouveautés)
+===================================================== */
+
+/* Header/Brand neon */
+.app-header{width:100%;max-width:1020px;margin:0 auto 14px;display:flex;justify-content:space-between;align-items:center}
+.brand{display:flex;align-items:center;gap:10px;font-weight:900;letter-spacing:.6px}
+.brand .dot{width:10px;height:10px;border-radius:50%;background:var(--accent);box-shadow:0 0 10px var(--accent),0 0 18px var(--accent2)}
+.brand span{font-size:18px;color:var(--text);text-shadow:0 0 12px rgba(0,255,213,.35)}
+
+/* Page entrance */
+.page{animation:page-in .5s ease-out}
+@keyframes page-in{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+/* Title micro-pop */
+h1{animation:title-pop .9s ease-out}
+@keyframes title-pop{from{transform:scale(.98);filter:brightness(.92)}to{transform:none;filter:none}}
+
+/* Button idle shimmer (optional: add .btn-shimmer) */
+button,.btn{background-size:220% 220%}
+.btn-shimmer{animation:btn-sheen 3.6s ease-in-out infinite}
+@keyframes btn-sheen{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+
+/* Board depth */
+.board-wrap{transition:transform .25s ease}
+.board-wrap:hover{transform:translateY(-2px)}
+
+/* Cell hover ripple */
+.cell::after{content:"";position:absolute;inset:-6px;border-radius:50%;opacity:0;transform:scale(.85);box-shadow:0 0 0 0 rgba(0,255,213,.25);transition:opacity .18s, transform .18s}
+.cell:hover::after{opacity:1;transform:scale(1)}
+
+/* Landing cue for the next token */
+.cell.drop-target{animation:drop-pop .28s ease-out}
+@keyframes drop-pop{0%{transform:translateY(-10px) scale(.9);filter:brightness(1.2)}100%{transform:none;filter:none}}
+
+/* Pulse for last move (if you add that class via server later) */
+.cell.last-move{animation:lastpulse 1.6s ease-in-out 2}
+@keyframes lastpulse{0%,100%{box-shadow:0 0 12px rgba(0,255,213,.28)}50%{box-shadow:0 0 20px rgba(0,255,213,.55)}}
+
+/* Tag subtle glow */
+.tag{box-shadow:0 0 0 1px var(--line) inset, 0 0 14px rgba(0,255,213,.16)}
+/* ===========================================================
+   CENTRAGE GLOBAL ET AJUSTEMENTS
+=========================================================== */
+.center-wrapper {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 24px;
+}
+
+.page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.board-wrap {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 20px;
+}
+
+.columns {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
   margin-top: 20px;
 }
 
-.level-option {
+.actions {
   display: flex;
+  justify-content: center;
+  gap: 14px;
+  margin-top: 20px;
+}
+
+.top {
+  display: flex;
+  justify-content: center;
   align-items: center;
-  gap: 8px;
-  background: rgba(255, 255, 255, 0.05);
-  padding: 10px 16px;
-  border-radius: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  transition: background 0.2s ease, transform 0.2s ease;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+/* ===========================================================
+   CENTRAGE PAGE D’ACCUEIL
+=========================================================== */
+.home-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  text-align: center;
+  width: 100%;
 }
 
-.level-option:hover {
-  background: rgba(97, 231, 200, 0.1);
-  transform: translateY(-2px);
+.home-page h1 {
+  margin-bottom: 8px;
+  font-size: clamp(32px, 5vw, 52px);
+  text-shadow: 0 0 14px rgba(0,255,213,.3), 0 0 22px rgba(59,124,255,.3);
 }
 
-.level-option input[type="radio"],
-.level-option input[type="checkbox"] {
-  width: 18px;
-  height: 18px;
-  accent-color: var(--accent); /* change la couleur du check */
-  cursor: pointer;
+.home-page h2 {
+  font-weight: 500;
+  color: var(--muted);
+  margin-bottom: 12px;
 }
 
-.level-option label {
-  font-size: 16px;
-  font-weight: 600;
-  color: var(--text);
-  cursor: pointer;
+.home-page .form {
+  margin-top: 20px;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 16px;
+}
+
+.home-page .actions {
+  display: flex;
+  justify-content: center;
+  margin-top: 16px;
+}
+
+@media (max-width: 480px) {
+  .home-page h1 { font-size: 32px; }
+  .home-page h2 { font-size: 18px; }
 }

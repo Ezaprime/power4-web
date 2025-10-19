@@ -3,41 +3,55 @@
 <html lang="fr">
 <head>
   <meta charset="utf-8">
-  <title>Power4 - Start</title>
+  <title>Power 4 – Accueil</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="/static/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;900&display=swap" rel="stylesheet">
 </head>
 <body>
-  <div class="page">
-    <h1>POWER 4</h1>
-    <h2>Entrez vos noms et choisissez une difficulté</h2>
+  <div class="center-wrapper">
+    <header class="app-header">
+      <div class="brand"><div class="dot"></div><span>POWER 4</span></div>
+    </header>
 
-    <form action="/start" method="POST" class="form">
-      <label>Joueur 1
-        <input type="text" name="p1" placeholder="Nom joueur 1" required>
-      </label>
-      <label>Joueur 2
-        <input type="text" name="p2" placeholder="Nom joueur 2" required>
-      </label>
+    <div class="page home-page">
+      <h1>⚡ POWER 4 ⚡</h1>
+      <h2>Entrez vos prénoms et choisissez une difficulté</h2>
 
-      <div class="levels">
-  <div class="level-option">
-    <input type="radio" id="easy" name="level" value="easy">
-    <label for="easy">Facile</label>
-  </div>
-  <div class="level-option">
-    <input type="radio" id="medium" name="level" value="medium">
-    <label for="medium">Moyen</label>
-  </div>
-  <div class="level-option">
-    <input type="radio" id="hard" name="level" value="hard">
-    <label for="hard">Difficile</label>
-  </div>
-</div>
+      <form action="/start" method="POST" class="form" autocomplete="off">
+        <label>
+          Joueur 1
+          <input type="text" name="p1" placeholder="Prénom du joueur 1" required>
+        </label>
 
+        <label>
+          Joueur 2
+          <input type="text" name="p2" placeholder="Prénom du joueur 2" required>
+        </label>
 
-      <button type="submit">Start</button>
-    </form>
+        <div class="levels" role="radiogroup" aria-label="Choisir la difficulté">
+          <label class="level-option">
+            <input type="radio" name="difficulty" value="easy" checked>
+            <span>Facile</span>
+          </label>
+
+          <label class="level-option">
+            <input type="radio" name="difficulty" value="normal">
+            <span>Normal</span>
+          </label>
+
+          <label class="level-option">
+            <input type="radio" name="difficulty" value="hard">
+            <span>Difficile</span>
+          </label>
+        </div>
+
+        <div class="actions">
+          <button type="submit" class="btn btn-shimmer">🚀 Commencer</button>
+        </div>
+      </form>
+    </div>
   </div>
 </body>
 </html>

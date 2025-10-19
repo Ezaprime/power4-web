@@ -3,48 +3,110 @@
 <html lang="fr">
 <head>
   <meta charset="utf-8">
-  <title>Power4 - Game</title>
+  <title>Power 4 – Game</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="/static/style.css">
-  <style>
-    .columns{display:flex;gap:8px;justify-content:center;margin:12px 0 16px}
-    .columns button{padding:8px 10px;border-radius:8px;border:1px solid rgba(255,255,255,.3);background:rgba(255,255,255,.1);color:#fff;cursor:pointer}
-    .board{border-collapse:separate;border-spacing:8px;margin:0 auto}
-    .cell{width:48px;height:48px;border-radius:50%;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25)}
-    .p1{background:radial-gradient(circle at 35% 35%, #ffe8a6, #ffb800 45%, #b07a00 75%)}
-    .p2{background:radial-gradient(circle at 35% 35%, #b6fff0, #39e1bf 45%, #1f9e88 75%)}
-    .top{display:flex;gap:12px;justify-content:center;margin-bottom:10px}
-    .btn{background:#fff;color:#1a1a1a;border:none;border-radius:10px;padding:8px 12px;text-decoration:none}
-  </style>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;900&display=swap" rel="stylesheet">
 </head>
 <body>
-  <div class="page">
-    <div class="top">
-      <a class="btn" href="/reset">Rematch</a>
-      <span>Tour : Joueur {{.Current}}</span>
-      <span>Difficulté : {{.Difficulty}}</span>
-    </div>
+  <div class="center-wrapper">
+    <header class="app-header">
+      <div class="brand"><div class="dot"></div><span>POWER 4</span></div>
+      <nav class="nav">
+        <form action="/reset" method="GET" style="display:inline">
+          <button class="btn ghost" type="submit">🏠 Accueil</button>
+        </form>
+      </nav>
+    </header>
 
-    <h1>{{.Player1}} (1) vs {{.Player2}} (2)</h1>
+    <div class="page" id="view" data-view="play">
+      <div class="top">
+        <span class="tag">Difficulté : {{.Difficulty}}</span>
+        <span id="turnTag" class="tag">Tour :
+          {{if eq .Current 1}}🔶 {{.Player1}}{{else}}🔷 {{.Player2}}{{end}}
+        </span>
+      </div>
 
-    <form action="/play" method="POST" class="columns">
-      {{range .ColumnIndexes}}
-        <button name="col" value="{{.}}">Col {{.}}</button>
-      {{end}}
-    </form>
+      <h1>{{.Player1}} (1) vs {{.Player2}} (2)</h1>
 
-    <table class="board">
-      {{range $r, $row := .Grid}}
-        <tr>
-          {{range $row}}
-            {{if eq . 1}}<td class="cell p1"></td>
-            {{else if eq . 2}}<td class="cell p2"></td>
-            {{else}}<td class="cell"></td>{{end}}
+      <div class="board-wrap">
+        <table class="board" id="board" aria-label="Plateau Power 4">
+          <tbody>
+          {{range $r, $row := .Grid}}
+            <tr>
+              {{range $c, $val := $row}}
+                <td>
+                  <div
+                    class="cell {{if eq $val 1}}p1{{else if eq $val 2}}p2{{end}}"
+                    data-row="{{$r}}"
+                    data-col="{{$c}}">
+                  </div>
+                </td>
+              {{end}}
+            </tr>
           {{end}}
-        </tr>
-      {{end}}
-    </table>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="columns" id="colButtons">
+        {{range .ColumnIndexes}}
+          <button type="button" data-col="{{.}}">Col {{.}}</button>
+        {{end}}
+      </div>
+
+      <div class="actions">
+        <form action="/reset" method="POST">
+          <button class="btn" type="submit">🔁 Rejouer</button>
+        </form>
+        <form action="/reset" method="GET" style="display:inline">
+          <button class="btn ghost" type="submit">🏠 Accueil</button>
+        </form>
+      </div>
+    </div>
   </div>
+
+  <script>
+  // --- Jeu sans reload ---
+  async function playMove(col) {
+    try {
+      const empties = Array.from(document.querySelectorAll(`.cell[data-col='${col}']`))
+        .filter(c => !c.classList.contains("p1") && !c.classList.contains("p2"));
+      if (empties.length) {
+        const target = empties[empties.length - 1];
+        target.classList.add("drop-target");
+        setTimeout(()=>target.classList.remove("drop-target"), 400);
+      }
+    } catch(e){}
+
+    const formData = new FormData();
+    formData.append("col", col);
+
+    let html;
+    try {
+      const res = await fetch("/play", { method:"POST", body:formData, redirect:"follow" });
+      html = await res.text();
+    } catch(e){ return console.error(e); }
+
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(html, "text/html");
+    const isResult = doc.querySelector('[data-view="result"]');
+    if (isResult) return window.location.href = "/";
+
+    const newBoard = doc.querySelector("#board");
+    const newTurn  = doc.querySelector("#turnTag");
+    if (newBoard) document.querySelector("#board").innerHTML = newBoard.innerHTML;
+    if (newTurn)  document.querySelector("#turnTag").innerHTML = newTurn.innerHTML;
+    bindUI();
+  }
+
+  function bindUI(){
+    document.querySelectorAll(".cell").forEach(c=>c.onclick=()=>playMove(c.dataset.col));
+    document.querySelectorAll("#colButtons [data-col]").forEach(b=>b.onclick=()=>playMove(b.dataset.col));
+  }
+  bindUI();
+  </script>
 </body>
 </html>
 {{end}}
