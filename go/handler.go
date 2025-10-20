@@ -7,7 +7,7 @@ import (
 )
 
 func loadTemplates() (*template.Template, error) {
-	// IMPORTANT : ces 3 fichiers DOIVENT exister dans ./templates/
+	
 	return template.ParseFiles(
 		"templates/home.html",
 		"templates/play.html",

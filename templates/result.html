@@ -14,7 +14,7 @@
     <header class="app-header">
       <div class="brand"><div class="dot"></div><span>POWER 4</span></div>
       <nav class="nav">
-        <form action="/reset" method="GET" style="display:inline">
+        <form action="/" method="GET" style="display:inline">
           <button class="btn ghost" type="submit">🏠 Accueil</button>
         </form>
       </nav>
@@ -25,12 +25,14 @@
         <h1>Match nul 🤝</h1>
       {{else if eq .Winner 1}}
         <h1>Victoire de {{.Player1}} 🎉</h1>
+        <h2>Tié un Tigre</h2>
       {{else if eq .Winner 2}}
         <h1>Victoire de {{.Player2}} 🎉</h1>
+        <h2>Tié un monstre</h2>
       {{else}}
         <h1>Partie terminée</h1>
       {{end}}
-
+      
       <h2>Niveau : {{.Difficulty}} — Coups joués : {{.Moves}}</h2>
 
       <div class="board-wrap">
@@ -50,11 +52,14 @@
       </div>
 
       <div class="actions">
-        <form action="/start" method="POST">
-          <button class="btn" type="submit">🔁 Rejouer</button>
-        </form>
-        <form action="/reset" method="GET" style="display:inline">
-          <button class="btn ghost" type="submit">🏠 Accueil</button>
+  <form action="/reset" method="GET">
+    <button class="btn" type="submit">🔁 Rejouer</button>
+  </form>
+  <form action="/reset" method="GET" style="display:inline">
+    <button class="btn ghost" type="submit">🏠 Accueil</button>
+  </form>
+</div>
+
         </form>
       </div>
     </div>

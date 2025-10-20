@@ -69,7 +69,7 @@ func dropToken(g *Game, col int, player int) bool {
 }
 
 func checkWin(grid [][]int, rows, cols, p int) bool {
-	// horizontal
+	
 	for r := 0; r < rows; r++ {
 		for c := 0; c <= cols-4; c++ {
 			if grid[r][c] == p && grid[r][c+1] == p && grid[r][c+2] == p && grid[r][c+3] == p {
@@ -77,7 +77,7 @@ func checkWin(grid [][]int, rows, cols, p int) bool {
 			}
 		}
 	}
-	// vertical
+
 	for c := 0; c < cols; c++ {
 		for r := 0; r <= rows-4; r++ {
 			if grid[r][c] == p && grid[r+1][c] == p && grid[r+2][c] == p && grid[r+3][c] == p {
@@ -85,7 +85,7 @@ func checkWin(grid [][]int, rows, cols, p int) bool {
 			}
 		}
 	}
-	// diag ↘
+	
 	for r := 0; r <= rows-4; r++ {
 		for c := 0; c <= cols-4; c++ {
 			if grid[r][c] == p && grid[r+1][c+1] == p && grid[r+2][c+2] == p && grid[r+3][c+3] == p {
@@ -93,7 +93,7 @@ func checkWin(grid [][]int, rows, cols, p int) bool {
 			}
 		}
 	}
-	// diag ↗
+	
 	for r := 3; r < rows; r++ {
 		for c := 0; c <= cols-4; c++ {
 			if grid[r][c] == p && grid[r-1][c+1] == p && grid[r-2][c+2] == p && grid[r-3][c+3] == p {

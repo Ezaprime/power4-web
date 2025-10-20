@@ -1,9 +1,4 @@
-/* =======================================================
-   POWER4 — LED / Néon Arcade (safe clicks, no overlays)
-   by Chef's UI Lab ✨
-======================================================= */
 
-/* Base & variables */
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%}
 :root{
@@ -16,7 +11,7 @@ html,body{height:100%}
   --r:18px; --shadow:0 22px 60px rgba(0,0,0,.55);
 }
 
-/* Fond */
+
 body{
   font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
   color:var(--text);
@@ -28,7 +23,7 @@ body{
   padding:36px;
 }
 
-/* Carte principale */
+
 .page{
   width:min(1020px,94vw);
   padding:38px 30px;
@@ -40,7 +35,7 @@ body{
   display:flex;flex-direction:column;align-items:center;gap:16px;
 }
 
-/* Titres */
+
 h1{
   font-size:clamp(30px,4.6vw,46px);
   text-align:center; letter-spacing:.3px;
@@ -51,7 +46,7 @@ h2{
   color:var(--muted); font-weight:600; text-align:center;
 }
 
-/* Boutons génériques (shimmer + glow) */
+
 button,.btn{
   --g1:var(--accent); --g2:var(--accent2);
   appearance:none;border:0;border-radius:12px;
@@ -70,12 +65,12 @@ button:hover,.btn:hover{
 button:active,.btn:active{ transform:scale(.985) }
 .btn.ghost{ background:transparent;color:var(--text);border:1px solid var(--line);box-shadow:none }
 
-/* Focus accessible */
+
 :where(a,button,.btn,input):focus{
   outline:3px solid rgba(0,255,213,.35); outline-offset:2px;
 }
 
-/* Formulaire */
+
 .form{display:grid;gap:14px;width:min(500px,94%);margin-top:8px}
 .form label{display:grid;gap:8px;font-weight:700}
 input[type="text"],input[type="number"]{
@@ -91,7 +86,6 @@ input:focus{
   background:rgba(255,255,255,.1); transform:translateY(-1px);
 }
 
-/* Niveaux (radio chips) */
 .levels{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:12px}
 .level-option{
   display:flex;align-items:center;gap:10px;cursor:pointer;user-select:none;
@@ -103,16 +97,14 @@ input:focus{
 .level-option input[type="radio"]{width:18px;height:18px;accent-color:var(--accent);cursor:pointer}
 .level-option span{letter-spacing:.3px}
 
-/* Top bar */
+
 .top{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;align-items:center;width:100%}
 .tag{
   padding:6px 10px;border:1px solid var(--line);border-radius:999px;
   background:rgba(255,255,255,.06);color:var(--muted);font-size:14px
 }
 
-/* =======================================================
-   LED FRAME autour du plateau
-======================================================= */
+
 .board{
   position:relative;
   border-collapse:separate; border-spacing:12px;
@@ -138,7 +130,7 @@ input:focus{
 }
 @keyframes led-scan { to { background-position:200px 0; } }
 
-/* bandes LED verticales (via wrapper) */
+
 .board-wrap{
   position:relative;
   display:inline-block;
@@ -159,9 +151,7 @@ input:focus{
 .board-wrap::after{ right:-18px; animation-direction:reverse; }
 @keyframes led-drop { to { background-position:0 220px; } }
 
-/* =======================================================
-   CELLULES & PIONS — effets lumineux
-======================================================= */
+
 .cell{
   width:56px; height:56px; border-radius:50%;
   background:radial-gradient(140% 140% at 30% 25%, rgba(255,255,255,.22), rgba(255,255,255,.05) 48%, rgba(0,0,0,.25) 100%);
@@ -182,7 +172,7 @@ input:focus{
   filter:drop-shadow(0 0 10px rgba(0,255,213,.22));
 }
 
-/* Pion Joueur 1 (gold LED) */
+
 .p1{
   background:
     radial-gradient(60% 60% at 35% 30%, #fff5bf 0%, #ffd451 40%, #c99108 78%),
@@ -200,7 +190,7 @@ input:focus{
   50%{filter:drop-shadow(0 0 16px rgba(255,204,51,.9))}
 }
 
-/* Pion Joueur 2 (cyan/teal LED) */
+
 .p2{
   background:
     radial-gradient(60% 60% at 35% 30%, #dcfff9 0%, #6ff0d6 40%, #1aa686 78%),
@@ -218,9 +208,7 @@ input:focus{
   50%{filter:drop-shadow(0 0 16px rgba(0,255,213,.9))}
 }
 
-/* =======================================================
-   BOUTONS DE COLONNES
-======================================================= */
+
 .columns{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:12px 0 16px}
 .columns button{
   position:relative; overflow:hidden;
@@ -243,19 +231,17 @@ input:focus{
 }
 .columns button:hover::after{ transform:translateX(0) }
 
-/* Résultat */
+
 .actions{display:flex;gap:10px;justify-content:center;margin-top:12px}
 
-/* ==========================================
-   Garanties anti-bug de clic
-========================================== */
+
 body::before, body::after,
 .page::before, .page::after { display:none !important; }
 .board::before, .board::after,
 .board-wrap::before, .board-wrap::after { pointer-events:none; }
 .page *, .board, .cell, .columns button, .btn, button, input { position:relative; z-index:1; }
 
-/* Responsive */
+
 @media (max-width:760px){
   .page{padding:28px 20px}
   .cell{width:48px;height:48px}
@@ -266,51 +252,45 @@ body::before, body::after,
   .columns{gap:6px}
 }
 
-/* =====================================================
-   AJOUTS “NEON + ANIMATIONS”
-   (à partir d’ici : nouveautés)
-===================================================== */
 
-/* Header/Brand neon */
+
 .app-header{width:100%;max-width:1020px;margin:0 auto 14px;display:flex;justify-content:space-between;align-items:center}
 .brand{display:flex;align-items:center;gap:10px;font-weight:900;letter-spacing:.6px}
 .brand .dot{width:10px;height:10px;border-radius:50%;background:var(--accent);box-shadow:0 0 10px var(--accent),0 0 18px var(--accent2)}
 .brand span{font-size:18px;color:var(--text);text-shadow:0 0 12px rgba(0,255,213,.35)}
 
-/* Page entrance */
+
 .page{animation:page-in .5s ease-out}
 @keyframes page-in{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 
-/* Title micro-pop */
+
 h1{animation:title-pop .9s ease-out}
 @keyframes title-pop{from{transform:scale(.98);filter:brightness(.92)}to{transform:none;filter:none}}
 
-/* Button idle shimmer (optional: add .btn-shimmer) */
+
 button,.btn{background-size:220% 220%}
 .btn-shimmer{animation:btn-sheen 3.6s ease-in-out infinite}
 @keyframes btn-sheen{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
 
-/* Board depth */
+
 .board-wrap{transition:transform .25s ease}
 .board-wrap:hover{transform:translateY(-2px)}
 
-/* Cell hover ripple */
+
 .cell::after{content:"";position:absolute;inset:-6px;border-radius:50%;opacity:0;transform:scale(.85);box-shadow:0 0 0 0 rgba(0,255,213,.25);transition:opacity .18s, transform .18s}
 .cell:hover::after{opacity:1;transform:scale(1)}
 
-/* Landing cue for the next token */
+
 .cell.drop-target{animation:drop-pop .28s ease-out}
 @keyframes drop-pop{0%{transform:translateY(-10px) scale(.9);filter:brightness(1.2)}100%{transform:none;filter:none}}
 
-/* Pulse for last move (if you add that class via server later) */
+
 .cell.last-move{animation:lastpulse 1.6s ease-in-out 2}
 @keyframes lastpulse{0%,100%{box-shadow:0 0 12px rgba(0,255,213,.28)}50%{box-shadow:0 0 20px rgba(0,255,213,.55)}}
 
-/* Tag subtle glow */
+
 .tag{box-shadow:0 0 0 1px var(--line) inset, 0 0 14px rgba(0,255,213,.16)}
-/* ===========================================================
-   CENTRAGE GLOBAL ET AJUSTEMENTS
-=========================================================== */
+
 .center-wrapper {
   width: 100%;
   min-height: 100vh;
@@ -357,9 +337,7 @@ button,.btn{background-size:220% 220%}
   flex-wrap: wrap;
   gap: 12px;
 }
-/* ===========================================================
-   CENTRAGE PAGE D’ACCUEIL
-=========================================================== */
+
 .home-page {
   display: flex;
   flex-direction: column;
